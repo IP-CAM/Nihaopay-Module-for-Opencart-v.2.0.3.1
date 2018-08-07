@@ -8,9 +8,8 @@ class ControllerPaymentNihaoPayOnlineAliPay extends Controller {
 	}
 
 	public function send() {
-	    if ($this->config->get('payment_nihaopay_online_alipay_server') == 'live') {
-	        $curl = 'https://api.nihaopay.com/v1.2/transactions/securepay';
-	    } elseif ($this->config->get('payment_nihaopay_online_alipay_server') == 'test') {
+		$url = 'https://api.nihaopay.com/v1.2/transactions/securepay';
+	    if ($this->config->get('nihaopay_online_alipay_server') == 'test') {
 	        $url = 'https://apitest.nihaopay.com/v1.2/transactions/securepay';
 	    }
 
@@ -20,7 +19,7 @@ class ControllerPaymentNihaoPayOnlineAliPay extends Controller {
 
 		$data = array();
 		
-		$token = $this->config->get('payment_nihaopay_online_alipay_token');
+		$token = $this->config->get('nihaopay_online_alipay_token');
 		
 		$data['client_ip'] = $this->request->server['REMOTE_ADDR'];
 		$data['description'] = html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8');
@@ -99,7 +98,7 @@ class ControllerPaymentNihaoPayOnlineAliPay extends Controller {
 	    
 	    $data = $this->request->get;
 	    
-	    $token = $this->config->get('payment_nihaopay_online_alipay_token');
+	    $token = $this->config->get('nihaopay_online_alipay_token');
 	    
 	    $verify_sign=$data['verify_sign'];
 	    
@@ -120,7 +119,7 @@ class ControllerPaymentNihaoPayOnlineAliPay extends Controller {
     	    if (isset($data['status']) && $data['status'] == 'success') {
     	        
     	        $order_id = $data['reference'];
-    	        $log->write($this->config->get('payment_nihaopay_online_alipay_order_status_id'));
+    	        $log->write($this->config->get('nihaopay_online_alipay_order_status_id'));
 
                 $order_info = $this->model_checkout_order->getOrder($order_id);
                 
@@ -128,7 +127,7 @@ class ControllerPaymentNihaoPayOnlineAliPay extends Controller {
                 
                 $message = "NihaoPay Payment accepted\n";
                 
-                $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('payment_nihaopay_online_alipay_order_status_id'), $message);
+                $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('nihaopay_online_alipay_order_status_id'), $message);
                 
                 $this->response->redirect($this->url->link('checkout/success', '', true));
                 
@@ -148,7 +147,7 @@ class ControllerPaymentNihaoPayOnlineAliPay extends Controller {
 	   
 	    $data = $this->request->get;
 	    
-	    $token = $this->config->get('payment_nihaopay_online_alipay_token');
+	    $token = $this->config->get('nihaopay_online_alipay_token');
 	    
 	    $verify_sign=$data['verify_sign'];
 	    
@@ -176,7 +175,7 @@ class ControllerPaymentNihaoPayOnlineAliPay extends Controller {
     	        
     	        $message = "NihaoPay Payment accepted\n";
     	        
-    	        $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('payment_nihaopay_online_alipay_order_status_id'), $message);
+    	        $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('nihaopay_online_alipay_order_status_id'), $message);
     	       
 	        }else{
 	            

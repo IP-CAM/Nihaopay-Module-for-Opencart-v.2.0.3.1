@@ -8,9 +8,8 @@ class ControllerPaymentNihaoPayOnlineWechatPay extends Controller {
 	}
 
 	public function send() {
-	    if ($this->config->get('payment_nihaopay_online_wechatpay_server') == 'live') {
-	        $curl = 'https://api.nihaopay.com/v1.2/transactions/securepay';
-	    } elseif ($this->config->get('payment_nihaopay_online_wechatpay_server') == 'test') {
+	    $url = 'https://api.nihaopay.com/v1.2/transactions/securepay';
+	    if ($this->config->get('nihaopay_online_wechatpay_server') == 'test') {
 	        $url = 'https://apitest.nihaopay.com/v1.2/transactions/securepay';
 	    }
 
@@ -20,7 +19,7 @@ class ControllerPaymentNihaoPayOnlineWechatPay extends Controller {
 
 		$data = array();
 		
-		$token = $this->config->get('payment_nihaopay_online_wechatpay_token');
+		$token = $this->config->get('nihaopay_online_wechatpay_token');
 		
 		$data['client_ip'] = $this->request->server['REMOTE_ADDR'];
 		$data['description'] = html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8');
@@ -99,7 +98,7 @@ class ControllerPaymentNihaoPayOnlineWechatPay extends Controller {
 	    
 	    $data = $this->request->get;
 	    
-	    $token = $this->config->get('payment_nihaopay_online_wechatpay_token');
+	    $token = $this->config->get('nihaopay_online_wechatpay_token');
 	    
 	    $verify_sign=$data['verify_sign'];
 	    
@@ -125,7 +124,7 @@ class ControllerPaymentNihaoPayOnlineWechatPay extends Controller {
 	            
 	            $message = "NihaoPay Payment accepted\n";
 	            
-	            $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('payment_nihaopay_online_wechatpay_order_status_id'), $message);
+	            $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('nihaopay_online_wechatpay_order_status_id'), $message);
 	            
 	            $this->response->redirect($this->url->link('checkout/success', '', true));
 	            
@@ -148,7 +147,7 @@ class ControllerPaymentNihaoPayOnlineWechatPay extends Controller {
 	    
 	    $data = $this->request->get;
 	    
-	    $token = $this->config->get('payment_nihaopay_online_wechatpay_token');
+	    $token = $this->config->get('nihaopay_online_wechatpay_token');
 	    
 	    $verify_sign=$data['verify_sign'];
 	    
@@ -175,7 +174,7 @@ class ControllerPaymentNihaoPayOnlineWechatPay extends Controller {
 	            
 	            $message = "NihaoPay Payment accepted\n";
 	            
-	            $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('payment_nihaopay_online_wechatpay_order_status_id'), $message);
+	            $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('nihaopay_online_wechatpay_order_status_id'), $message);
 	            
 	        }else{
 	            $log->write(print_r($data,true));

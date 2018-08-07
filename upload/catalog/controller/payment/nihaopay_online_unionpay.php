@@ -8,9 +8,8 @@ class ControllerPaymentNihaoPayOnlineUnionPay extends Controller {
 	}
 
 	public function send() {
-	    if ($this->config->get('payment_nihaopay_online_unionpay_server') == 'live') {
-	        $curl = 'https://api.nihaopay.com/v1.2/transactions/securepay';
-	    } elseif ($this->config->get('payment_nihaopay_online_unionpay_server') == 'test') {
+	    $url = 'https://api.nihaopay.com/v1.2/transactions/securepay';
+	    if ($this->config->get('nihaopay_online_unionpay_server') == 'test') {
 	        $url = 'https://apitest.nihaopay.com/v1.2/transactions/securepay';
 	    }
 
@@ -20,7 +19,7 @@ class ControllerPaymentNihaoPayOnlineUnionPay extends Controller {
 
 		$data = array();
 		
-		$token = $this->config->get('payment_nihaopay_online_unionpay_token');
+		$token = $this->config->get('nihaopay_online_unionpay_token');
 		
 		$data['client_ip'] = $this->request->server['REMOTE_ADDR'];
 		$data['description'] = html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8');
@@ -100,7 +99,7 @@ class ControllerPaymentNihaoPayOnlineUnionPay extends Controller {
 	    
 	    $data = $this->request->get;
 	    
-	    $token = $this->config->get('payment_nihaopay_online_unionpay_token');
+	    $token = $this->config->get('nihaopay_online_unionpay_token');
 	    
 	    $verify_sign=$data['verify_sign'];
 	    
@@ -128,7 +127,7 @@ class ControllerPaymentNihaoPayOnlineUnionPay extends Controller {
 	            
 	            $message = "NihaoPay Payment accepted\n";
 	            
-	            $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('payment_nihaopay_online_unionpay_order_status_id'), $message);
+	            $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('nihaopay_online_unionpay_order_status_id'), $message);
 	            
 	            $this->response->redirect($this->url->link('checkout/success', '', true));
 	            
@@ -151,7 +150,7 @@ class ControllerPaymentNihaoPayOnlineUnionPay extends Controller {
 	    
 	    $data = $this->request->get;
 	    
-	    $token = $this->config->get('payment_nihaopay_online_unionpay_token');
+	    $token = $this->config->get('nihaopay_online_unionpay_token');
 	    
 	    $verify_sign=$data['verify_sign'];
 	    
@@ -179,7 +178,7 @@ class ControllerPaymentNihaoPayOnlineUnionPay extends Controller {
 	            
 	            $message = "NihaoPay Payment accepted\n";
 	            
-	            $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('payment_nihaopay_online_unionpay_order_status_id'), $message);
+	            $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('nihaopay_online_unionpay_order_status_id'), $message);
 	            
 	        }else{
 	            

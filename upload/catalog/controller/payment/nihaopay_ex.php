@@ -33,9 +33,8 @@ class ControllerPaymentNihaoPayEx extends Controller {
 	}
 
 	public function send() {
-	    if ($this->config->get('payment_nihaopay_ex_server') == 'live') {
-	        $curl = 'https://api.nihaopay.com/v1.2/transactions/expresspay';
-	    } elseif ($this->config->get('payment_nihaopay_ex_server') == 'test') {
+	    $url = 'https://api.nihaopay.com/v1.2/transactions/expresspay';
+	    if ($this->config->get('nihaopay_ex_server') == 'test') {
 	        $url = 'https://apitest.nihaopay.com/v1.2/transactions/expresspay';
 	    }
 
@@ -45,7 +44,7 @@ class ControllerPaymentNihaoPayEx extends Controller {
 
 		$data = array();
 		
-		$token = $this->config->get('payment_nihaopay_ex_token');
+		$token = $this->config->get('nihaopay_ex_token');
 		
 		//$data['client_ip'] = $this->request->server['REMOTE_ADDR'];
 		$data['client_ip'] = "172.25.4.75";
@@ -99,7 +98,7 @@ class ControllerPaymentNihaoPayEx extends Controller {
 		    if ($httpCode == '200') {
 		        if(isset($results['status'])&& $results['status']=='success'){
     		        //执行addOrderHistory之前，邮件服务是否设置？  ---会出错或无限等待
-    		        $this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('payment_nihaopay_ex_order_status_id'));
+    		        $this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $this->config->get('nihaopay_ex_order_status_id'));
     		        
     		        $json['redirect'] = $this->url->link('checkout/success', '', true);
 		        }else{
